@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Pinball</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
+    <script src="js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script src="js/jquery.min.js"></script>
+
+</head>
+
+<body>
+
+    <div class="container-fluid ">
+        <div class="row">
+            <div class="col-8">
+                <img src="http://192.168.1.59:8081/0/stream" width="600" height="200" />
+            </div>
+
+
+            <div class="col-4">
+                <br />
+                <div class="row">
+                    <div class="col-4">
+                        <label>Score:</label>
+                    </div>
+                    <div class="col-6">
+                        <input type="text" class="form_control" id="result_score">
+                    </div>
+                </div>
+
+                <br />
+                <div class="row">
+                    <div class="col-4">
+                        <label>Ball:</label>
+                    </div>
+                    <div class="col-6">
+                        <input type="text" class="form_control" id="result_ball">
+                    </div>
+                </div>
+
+                <br />
+
+                <div class="row">
+                    <div class="col-4">
+                        <label>Detail:</label>
+                    </div>
+                    <div class="col-6">
+                        <input type="text" class="form_control" id="result_detail">
+                    </div>
+                </div>
+
+
+            </div>
+
+
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-4">
+                <button class="btn btn-primary" id="button_insert_coin">Insert Coin</button>
+            </div>
+            <div class="col-4">
+                <button class="btn btn-primary" id="button_start_game">Start Game</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const BIZLUTION_RESTFUL_API_URL = "http://192.168.1.59:5000/"
+        $(document).ready(function () {
+
+            function insertCoin() {
+                $.ajax({
+                    url: BIZLUTION_RESTFUL_API_URL + 'insert_coin',
+                    async: false,
+                    error: function (result) {
+                    },
+                    success: function (result) {
+
+                    }
+                })
+            }
+
+
+            function startGame() {
+                $.ajax({
+                    url: BIZLUTION_RESTFUL_API_URL + 'start_game',
+                    async: false,
+                    error: function (result) {
+                    },
+                    success: function (result) {
+
+                    }
+                })
+            }
+
+            function getResult() {
+                $.ajax({
+                    dataType: "json",
+                    url: BIZLUTION_RESTFUL_API_URL + 'get_result',
+                    async: true,
+                    error: function (result) {
+                    },
+                    success: function (result) {
+                        $('#result_score').val(result.data.score)
+                        $('#result_ball').val(result.data.ball)
+                        $('#result_detail').val(result.data.detail)
+                    }
+                })
+            }
+
+            //網址http://192.168.1.59:5000/insert_coin 自動跳出功能並執行
+
+            $('#button_insert_coin').on('click', function (event) {
+                insertCoin()
+            })
+
+            $('#button_start_game').on('click', function (event) {
+                startGame()
+            })
+
+
+            function foo() {
+                getResult()
+                setTimeout(foo, 1000)
+            }
+            foo()
+
+
+        })
+
+    </script>
+</body>
+
+</html>
